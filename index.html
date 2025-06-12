@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Favicon Placeholder -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
     
     <style>
         /* General Styling */
@@ -19,6 +22,8 @@
             font-family: 'Inter', sans-serif;
             background-color: #000000;
             color: #e2e8f0; /* slate-200 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Hero Section Glow */
@@ -46,15 +51,21 @@
             100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
         }
 
-        /* Scroll Animation */
-        .scroll-reveal {
+        /* --- ENHANCED SCROLL ANIMATION --- */
+        [data-animate] {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.215, 0.610, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
         }
-        .scroll-reveal.is-visible {
+        [data-animate].is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+        /* Parallax effect for visuals */
+        .feature-visual {
+            transform: translateY(var(--parallax-y, 0px));
+            will-change: transform;
+            transition: transform 0.1s linear;
         }
         
         /* Base for Feature Visuals */
@@ -74,7 +85,6 @@
         .logo-item:hover { opacity: 1 !important; }
 
         /* --- NEW ANIMATION STYLES --- */
-
         /* Animation 1: Neural Network */
         .network-grid {
             width: 100%;
@@ -160,18 +170,21 @@
         }
 
         /* --- MODAL STYLES --- */
-        .modal-overlay {
-            transition: opacity 0.3s ease-in-out;
+        .modal-overlay { transition: opacity 0.3s ease-in-out; }
+        .modal-container { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+        
+        /* --- HEADER SCROLL EFFECT --- */
+        header.scrolled {
+            background-color: rgba(0,0,0,0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .modal-container {
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-        }
+
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-40 bg-black/50 backdrop-blur-sm">
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="text-xl font-bold text-white">
@@ -198,17 +211,19 @@
         <section class="relative h-screen flex items-center justify-center text-center overflow-hidden pt-16">
             <div class="hero-glow-container"><div class="hero-glow"></div></div>
             <div class="container mx-auto px-6 z-10">
-                <a href="#" class="inline-flex items-center justify-center bg-black border border-purple-800/50 rounded-full px-4 py-1 text-sm text-slate-300 hover:border-purple-600 transition-colors mb-6">
-                    全新发布: AIGC 企业赋能工作坊
-                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 leading-tight tracking-tighter">
+                <div data-animate>
+                    <a href="#" class="inline-flex items-center justify-center bg-black border border-purple-800/50 rounded-full px-4 py-1 text-sm text-slate-300 hover:border-purple-600 transition-colors mb-6">
+                        全新发布: AIGC 企业赋能工作坊
+                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 leading-tight tracking-tighter" data-animate style="transition-delay: 100ms;">
                     AI 赋能下一代视频创意
                 </h1>
-                <p class="max-w-3xl mx-auto mt-6 text-lg md:text-xl text-slate-400">
+                <p class="max-w-3xl mx-auto mt-6 text-lg md:text-xl text-slate-400" data-animate style="transition-delay: 200ms;">
                     曲灵映创 (Artiflexion AI) 结合前沿的 AIGC 技术与专业的创意策略，为您的品牌打造颠覆性的视频广告，并提供体系化的 AIGC 赋能培训。
                 </p>
-                <div class="mt-10 flex justify-center gap-4">
+                <div class="mt-10 flex justify-center gap-4" data-animate style="transition-delay: 300ms;">
                     <a href="#" id="open-modal-btn-hero" class="bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-purple-500 transition-transform duration-300 transform hover:scale-105 shadow-lg shadow-purple-900/50">
                         预约咨询
                     </a>
@@ -220,11 +235,10 @@
         </section>
 
         <!-- Trusted by Section -->
-        <section class="py-16 scroll-reveal">
-             <div class="container mx-auto px-6">
+        <section class="py-16">
+             <div class="container mx-auto px-6" data-animate>
                 <p class="text-center text-sm font-medium text-slate-500 mb-8">深受行业领先者的信赖</p>
                 <div class="flex flex-wrap justify-center items-center gap-x-10 md:gap-x-16 gap-y-6 opacity-60">
-                     <!-- Placeholder Logos -->
                     <svg class="logo-item h-6 text-slate-400" viewBox="0 0 133 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30.34 20.33v-13h3.84v13h-3.84Zm5.14-13h3.8v13h-3.8v-13Zm16.1 0v13h-3.83v-13h3.83Zm-10.96 0h3.82v13h-3.82v-13Zm16.1 0h3.83v13h-3.83v-13Zm-5.14 0h3.83v13h-3.83v-13Zm16.11 0h3.83v13h-3.83v-13Zm-10.97 0h3.83v13h-3.83v-13Zm-16.1 0h3.83v13h-3.83v-13Zm21.25 0h3.82v13h-3.82v-13Z" fill="currentColor"></path><path d="M110.83 20.33v-13h3.83v13h-3.83Zm-5.14 0v-13h3.83v13h-3.83Z" fill="currentColor"></path><path d="M127.87 7.33v13h-3.83v-13h3.83Zm-5.14 0v13h-3.83v-13h3.83Zm-5.13 0v13h-3.83v-13h3.83Z" fill="currentColor"></path><path d="M0 20.33V7.33h3.84v13H0Zm10.28-13h3.82v13h-3.82V7.33Zm-5.14 0h3.83v13H5.14V7.33Zm10.28 0h3.83v13h-3.83V7.33Zm5.14 0h3.83v13h-3.83V7.33Z" fill="currentColor"></path><path d="M99.36 12.43a4.02 4.02 0 0 1-4.01-4.05 4.02 4.02 0 0 1 4.01-4.04 4.02 4.02 0 0 1 4.02 4.04 4.02 4.02 0 0 1-4.02 4.05Zm0-4.05Z" fill="currentColor"></path><path d="M99.36 24.38a4.01 4.01 0 0 1-4.01-4.05 4.01 4.01 0 0 1 4.01-4.05 4.01 4.01 0 0 1 4.02 4.05 4.01 4.01 0 0 1-4.02 4.05Zm0-4.05Z" fill="currentColor"></path></svg>
                     <svg class="logo-item h-6 text-slate-400" viewBox="0 0 98 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M26.47 11.3c2.42 0 4.28 1.76 4.28 4.12s-1.86 4.13-4.28 4.13c-2.42 0-4.28-1.77-4.28-4.13s1.86-4.12 4.28-4.12Zm0 6.1c1.23 0 2.05-.83 2.05-1.98 0-1.15-.82-1.98-2.05-1.98-1.23 0-2.05.83-2.05 1.98 0 1.15.82 1.98 2.05 1.98Z" fill="currentColor"></path><path d="M37.36 11.3c2.42 0 4.28 1.76 4.28 4.12s-1.86 4.13-4.28 4.13c-2.42 0-4.28-1.77-4.28-4.13s1.86-4.12 4.28-4.12Zm0 6.1c1.23 0 2.05-.83 2.05-1.98 0-1.15-.82-1.98-2.05-1.98-1.23 0-2.05.83-2.05 1.98 0 1.15.82 1.98 2.05 1.98Z" fill="currentColor"></path><path d="M48.26 11.4c1.9 0 3.32.9 3.73 2.1h-6.8c.25-2.2 1.9-3.66 3.07-3.66 1.05 0 1.93.58 2.3 1.56h2.2c-.52-2.1-2.47-3.46-4.5-3.46-2.9 0-5.02 2.1-5.02 5.2s2.12 5.2 5.02 5.2c2.28 0 4.05-1.5 4.5-3.5h-2.2c-.37 1-1.25 1.6-2.3 1.6-1.17 0-2.82-1.46-3.07-3.66h6.8c-.05.5-.07 1-.07 1.25 0 1.5.75 2.65-2.23 2.65-1.98 0-3.35-1.08-3.35-2.9C44.5 12.8 46.1 11.4 48.26 11.4Z" fill="currentColor"></path><path d="M60.18 19.54c-.9 0-1.53-.4-1.53-1.15v-6.9h-2.1v7.1c0 1.68 1.12 2.6 2.8 2.6 1.48 0 2.52-1.1 2.52-2.4v-7.3h-2.1v6.95c0 .75-.62 1.15-1.52 1.15Z" fill="currentColor"></path><path d="M0 20.35V7.35h2.1v13H0Z" fill="currentColor"></path><path d="M15.4 13.45v6.9H13.3v-6.9H9.1v-2.1h10.5v2.1h-4.2Z" fill="currentColor"></path><path d="m71.1 13.45 2.2-2.15-4-4.2-2.2 2.15 4 4.2Zm1.9-8.45-2.2 2.1-4.2-4.25-2.1-2.15 4.2-4.25L73 5l-4.2-4.25Z" fill="currentColor"></path><path d="M84.3 20.35V7.35h2.1v13h-2.1Z" fill="currentColor"></path><path d="M97.2 13.45v6.9H95.1v-6.9h-4.2v-2.1h10.5v2.1h-4.2Z" fill="currentColor"></path></svg>
                     <svg class="logo-item h-6 text-slate-400" viewBox="0 0 102 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.98 20.33V7.33h3.84v13h-3.84Zm5.14-13h3.8v13h-3.8v-13Zm16.1 0v13h-3.83v-13h3.83Zm-10.96 0h3.82v13h-3.82v-13Z" fill="currentColor"></path><path d="M.7 20.33V7.33h3.84v13H.7Z" fill="currentColor"></path><path d="M60.78 20.33V7.33h3.83v13h-3.83Zm-5.14 0V7.33h3.83v13h-3.83Z" fill="currentColor"></path><path d="M83.25 7.33v13h-3.83v-13h3.83Zm-5.14 0v13h-3.83v-13h3.83Z" fill="currentColor"></path><path d="M48.11 7.33v13H44.3V7.33h3.82Z" fill="currentColor"></path><path d="m101.07 16.3-2.5-3.85 2.5-3.82h-4.1l-2.5 3.82 2.5 3.85h4.1Z" fill="currentColor"></path></svg>
@@ -233,27 +247,27 @@
         </section>
 
         <!-- Feature Section 1 -->
-        <section class="py-20 md:py-32 scroll-reveal">
+        <section class="py-20 md:py-32">
             <div class="container mx-auto px-6">
                 <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
                     <div class="md:w-1/2">
-                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">数据驱动，灵感无限</h2>
-                        <p class="mt-4 text-lg text-slate-400">我们利用先进的AIGC模型分析海量市场数据与用户偏好，精准洞察爆款趋势。从脚本撰写、画面构思到视觉风格，AI为您的视频广告注入源源不断的创意能量，打造真正触动人心的内容。</p>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight" data-animate>数据驱动，灵感无限</h2>
+                        <p class="mt-4 text-lg text-slate-400" data-animate style="transition-delay: 150ms;">我们利用先进的AIGC模型分析海量市场数据与用户偏好，精准洞察爆款趋势。从脚本撰写、画面构思到视觉风格，AI为您的视频广告注入源源不断的创意能量，打造真正触动人心的内容。</p>
                     </div>
-                    <div class="md:w-1/2 h-80 feature-visual"><div class="network-grid"></div></div>
+                    <div class="md:w-1/2 h-80 feature-visual" data-animate style="transition-delay: 300ms;"><div class="network-grid"></div></div>
                 </div>
             </div>
         </section>
 
         <!-- Feature Section 2 -->
-        <section class="py-20 md:py-32 scroll-reveal">
+        <section class="py-20 md:py-32">
             <div class="container mx-auto px-6">
                 <div class="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-24">
                     <div class="md:w-1/2">
-                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">为您的团队注入 AI 创造力</h2>
-                        <p class="mt-4 text-lg text-slate-400">我们提供体系化的企业 AIGC 赋能培训，内容涵盖从底层逻辑到高阶实战。帮助您的团队掌握最新的 AI 工具流，建立标准化的内容生产管线，将 AIGC 真正转化为企业发展的核心竞争力。</p>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight" data-animate>为您的团队注入 AI 创造力</h2>
+                        <p class="mt-4 text-lg text-slate-400" data-animate style="transition-delay: 150ms;">我们提供体系化的企业 AIGC 赋能培训，内容涵盖从底层逻辑到高阶实战。帮助您的团队掌握最新的 AI 工具流，建立标准化的内容生产管线，将 AIGC 真正转化为企业发展的核心竞争力。</p>
                     </div>
-                    <div class="md:w-1/2 h-80 feature-visual">
+                    <div class="md:w-1/2 h-80 feature-visual" data-animate style="transition-delay: 300ms;">
                         <div class="energy-core"></div>
                         <div class="energy-ring" style="animation-delay: 0s;"></div>
                         <div class="energy-ring" style="animation-delay: 2s;"></div>
@@ -263,14 +277,14 @@
         </section>
 
         <!-- Feature Section 3 -->
-        <section class="py-20 md:py-32 scroll-reveal">
+        <section class="py-20 md:py-32">
             <div class="container mx-auto px-6">
                 <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
                     <div class="md:w-1/2">
-                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">从概念到成片，无缝衔接</h2>
-                        <p class="mt-4 text-lg text-slate-400">告别繁琐的沟通与执行环节。我们提供从前期策略、AI 创意生成、中期拍摄到后期制作剪辑的全流程解决方案。让您专注于品牌战略，我们将创意高效落地，为您呈现卓越的最终成片。</p>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight" data-animate>从概念到成片，无缝衔接</h2>
+                        <p class="mt-4 text-lg text-slate-400" data-animate style="transition-delay: 150ms;">告别繁琐的沟通与执行环节。我们提供从前期策略、AI 创意生成、中期拍摄到后期制作剪辑的全流程解决方案。让您专注于品牌战略，我们将创意高效落地，为您呈现卓越的最终成片。</p>
                     </div>
-                    <div class="md:w-1/2 h-80 feature-visual">
+                    <div class="md:w-1/2 h-80 feature-visual" data-animate style="transition-delay: 300ms;">
                         <div class="orbit-container">
                             <div class="orbit-path" style="transform: rotate(20deg) scale(0.8)"></div>
                             <div class="orbit-path" style="transform: rotate(-30deg) scale(1)"></div>
@@ -287,7 +301,7 @@
     <!-- Footer -->
     <footer class="border-t border-slate-800/50 mt-20">
         <div class="container mx-auto px-6 py-16">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8" data-animate>
                 <div class="col-span-2 md:col-span-1">
                      <div class="text-xl font-bold text-white">曲灵映创 <span class="text-purple-400">Artiflexion</span></div>
                     <p class="text-sm text-slate-400 mt-2">重塑 AI 时代的内容创造</p>
@@ -322,7 +336,6 @@
                         <li><a href="mailto:uxbillzou@gmail.com" class="hover:text-white transition-colors">uxbillzou@gmail.com</a></li>
                         <li class="relative group">
                             <a href="#" class="hover:text-white transition-colors">社交媒体</a>
-                            <!-- QR Code Popup -->
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 h-32 p-1 bg-white rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none">
                                 <img src="qr.png" alt="社交媒体二维码" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ffffff/000000?text=QR+Code';">
                             </div>
@@ -330,7 +343,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="mt-16 pt-8 border-t border-slate-800/50 text-center text-sm text-slate-500">
+            <div class="mt-16 pt-8 border-t border-slate-800/50 text-center text-sm text-slate-500" data-animate style="transition-delay: 150ms;">
                 <p>&copy; 2024 Artiflexion AI Inc. All rights reserved.</p>
             </div>
         </div>
@@ -338,17 +351,12 @@
 
     <!-- Consultation Modal -->
     <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-        <!-- Overlay -->
         <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black/70 backdrop-blur-sm opacity-0"></div>
-        
-        <!-- Modal Content -->
         <div id="modal-container" class="modal-container bg-[#111111] border border-slate-800/80 w-full max-w-md p-8 rounded-2xl shadow-2xl shadow-purple-900/50 z-10 opacity-0 transform scale-95">
             <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-500 hover:text-white">&times;</button>
-            
             <div id="form-view">
                 <h2 class="text-2xl font-bold text-white">开始您的AI创意之旅</h2>
                 <p class="text-slate-400 mt-2 mb-6">请留下您的联系方式，我们的专家会尽快与您联系，探讨合作可能。</p>
-                
                 <form id="consultation-form">
                     <div class="space-y-4">
                         <input type="text" placeholder="您的姓名" class="w-full bg-white/5 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required>
@@ -357,15 +365,11 @@
                     </div>
                     <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 mt-6 rounded-lg hover:bg-purple-500 transition-colors">提交</button>
                 </form>
-
                 <div class="text-center text-sm text-slate-500 my-4">或</div>
-
                 <a href="mailto:uxbillzou@gmail.com" class="w-full block text-center bg-white/10 text-white font-semibold py-3 rounded-lg hover:bg-white/20 transition-colors">
                     直接发送邮件
                 </a>
             </div>
-
-            <!-- Success Message View -->
             <div id="success-view" class="hidden text-center">
                  <h2 class="text-2xl font-bold text-white">感谢您的提交！</h2>
                  <p class="text-slate-400 mt-2">我们已收到您的信息，将尽快与您取得联系。</p>
@@ -377,16 +381,41 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Scroll Animation ---
-            const sections = document.querySelectorAll('.scroll-reveal');
-            const observer = new IntersectionObserver(entries => {
+            // --- Enhanced Animation Logic ---
+            const animatedElements = document.querySelectorAll('[data-animate]');
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
                     }
                 });
             }, { threshold: 0.1 });
-            sections.forEach(section => observer.observe(section));
+            animatedElements.forEach(el => observer.observe(el));
+
+            // --- Parallax Effect ---
+            const parallaxVisuals = document.querySelectorAll('.feature-visual');
+            window.addEventListener('scroll', () => {
+                let scrollY = window.scrollY;
+                // Header scroll effect
+                const header = document.getElementById('main-header');
+                if (scrollY > 50) {
+                    header.classList.add('scrolled', 'backdrop-blur-sm');
+                } else {
+                    header.classList.remove('scrolled', 'backdrop-blur-sm');
+                }
+
+                // Parallax visuals
+                parallaxVisuals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const elementTop = rect.top + scrollY;
+                    const windowHeight = window.innerHeight;
+                    if (scrollY + windowHeight > elementTop && scrollY < elementTop + rect.height) {
+                        const parallaxValue = (rect.top + rect.height / 2 - windowHeight / 2) * 0.1;
+                        el.style.setProperty('--parallax-y', `${-parallaxValue}px`);
+                    }
+                });
+            }, { passive: true });
+
 
             // --- Feature Animation 1: Network Grid ---
             const networkGrid = document.querySelector('.network-grid');
@@ -436,6 +465,7 @@
 
             const openModal = () => {
                 modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
                 setTimeout(() => {
                     modalOverlay.classList.remove('opacity-0');
                     modalContainer.classList.remove('opacity-0', 'scale-95');
@@ -447,6 +477,7 @@
                 modalContainer.classList.add('opacity-0', 'scale-95');
                 setTimeout(() => {
                     modal.classList.add('hidden');
+                    document.body.style.overflow = ''; // Restore scroll
                     // Reset form for next time
                     formView.classList.remove('hidden');
                     successView.classList.add('hidden');
@@ -468,4 +499,3 @@
 
 </body>
 </html>
-
